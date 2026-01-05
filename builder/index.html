@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>nano-cms builder</title>
     <link rel="stylesheet" href="style.css">
+    <script type="module" defer src="script/builder.js"></script>
 </head>
 <body>
     <div id="status">
         <h1>nano-cms builder</h1>
         <h3>v0.0.1</h3>
-        <p id="status-text" class="success">wonderhoy!</p>
+        <p id="status-text" class="success">wonderhoy~!</p>
     </div>
     
     <div id="app">
@@ -21,6 +22,9 @@
             <button id="tool-panel-img" title="Add Image &#13;&#10;
             Add an image to the article"
             >🖼️</button>
+            <button id="tool-panel-build" title="Build &#13;&#10;
+            Generate the JSON for the article"
+            >🔧</button>
             <p style="font-size: 0.1em;">Advanced</p>
             <button id="tool-panel-json" 
             title="JSON editor mode &#13;&#10; 
@@ -28,12 +32,23 @@
             >{}</button>
 
         </div>
-        <div id="construction-site" contenteditable="true">
-            <h1 id="title">Untitled</h1>
-            <p id="description">No description</p>
-            <p id="authorship">Unknown author</p>
-            <p id="tags">[no tags]</p>
+        <div id="construction-site">
+            <div id="metadata-panel" contenteditable="true">
+                <h1 id="title">Untitled</h1>
+                <p id="description">No description</p>
+                <p id="authorship">Unknown author</p>
+                <p id="tags">[no tags]</p>
+            </div>
         </div>
     </div>
+
+    <template id="widget-container">
+        <div class="widget-container">
+            <img class="widget-up" src="img/icons/move-up.svg" draggable="false" alt="Move Widget Up">
+            <img class="widget-down" src="img/icons/move-down.svg" draggable="false" alt="Move Widget Down">
+            <img class="widget-delete" src="img/icons/delete.svg" draggable="false" alt="Delete Widget">
+            <div class="widget-content">
+        </div>
+    </template>
 </body>
 </html>
