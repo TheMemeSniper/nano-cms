@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nano-cms builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="status">
+        <h1>nano-cms builder</h1>
+        <h3>v0.0.1</h3>
+        <p id="status-text" class="success">wonderhoy!</p>
+    </div>
+    
+    <div id="app">
+        <div id="tool-panel">
+            <button id="tool-panel-text" title="Add Text &#13;&#10;
+            Add text to the article"
+            >T</button>
+            <button id="tool-panel-img" title="Add Image &#13;&#10;
+            Add an image to the article"
+            >🖼️</button>
+            <p style="font-size: 0.1em;">Advanced</p>
+            <button id="tool-panel-json" 
+            title="JSON editor mode &#13;&#10; 
+            Edit the generated JSON. Edits will be discarded when returning to the widget editor."
+            >{}</button>
+
+        </div>
+        <div id="construction-site" contenteditable="true">
+            <h1 id="title">Untitled</h1>
+            <p id="description">No description</p>
+            <p id="authorship">Unknown author</p>
+            <p id="tags">[no tags]</p>
+        </div>
+    </div>
+</body>
+</html>

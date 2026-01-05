@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+#tool-panel {
+    width: 2em;
+    background-color: #f0f0f0;
+    border-right: 1px solid #ccc;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0.5em;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#tool-panel button {
+    background: none;
+    border: none;
+    margin: 0.5em 0;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #333;
+}
+
+#tool-panel button:hover {
+    background-color: #ccc;
+}
+
+#tool-panel button:active {
+    background-color: #999;
+    color: #fff;
+}
+
+#tool-panel button:disabled {
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+#status {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #222;
+    color: #fff;
+    padding: 0.5em;
+    font-size: 0.9em;
+    justify-content: space-between;
+}
+
+#status-text {
+    text-align: right;
+    position: absolute;
+    right: 2em;
+    bottom: 0;    
+}
+
+#status-text.error {
+    color: #ff4d4d;
+}
+
+#status-text.success {
+    color: #4dff4d;
+}
+
+#status-text.warning {
+    color: #ffff4d;
+}
+
+#construction-site {
+    background-color: #f0f0f0;
+    margin-left: 4em;
+}
