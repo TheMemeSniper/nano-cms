@@ -43,7 +43,7 @@ export default class Widget {
             }
         })
 
-        this._element.id = this.id;
+        this._element.querySelector('.widget-container').id = this.id;
 
     }
 
