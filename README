@@ -1,7 +1,9 @@
 # nano-cms
+
 Programmer's idea of what a CMS should be
 
 ## How it works
+
 nano-cms is a web application that generates JSON files that you then host on a web server and construct on the client or build in advance using SSR.
 
 this generated JSON file includes:
@@ -25,7 +27,7 @@ example for an **article** by **Sakamoto** titled **Nichijou**:
     },
     "content": [
         "Nichijou is a surreal comedy manga created by Keiichi Arawi.",
-        {"type": "image", "src": "/blog/nichijou.png", "alt": "mio, mai and yuuko from nichijou looking at the viewer"}
+        {"type": "image", "data": {"src": "/blog/nichijou.png"}}
     ]
 }
 ```
