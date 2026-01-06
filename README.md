@@ -37,3 +37,8 @@ the `metadata.type` element is important because it describes to a client how co
 every element in the content dict is called a "widget". these widgets are rendered by the client into content.
 
 you'll notice on line 14 of this JSON an object that describes an image. this is a widget that describes special content containers to clients, like embedded images or videos.
+
+## demo
+
+the builder can be demoed here:
+[https://thememesniper.github.io/nano-cms/builder/](https://thememesniper.github.io/nano-cms/builder/)
