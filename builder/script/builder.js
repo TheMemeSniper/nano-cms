@@ -6,7 +6,7 @@ import { importArticle } from "./modules/importer.js";
 const toolPanelButtons = {
   text: document.getElementById("tool-panel-text"),
   image: document.getElementById("tool-panel-img"),
-  build: document.getElementById("tool-panel-json"),
+  build: document.getElementById("tool-panel-build"),
   import: document.getElementById("tool-panel-import"),
 };
 
@@ -130,7 +130,12 @@ function build() {
   content.metadata.description =
     constructionMap.metadata.description.textContent;
   content.metadata.authors = constructionMap.metadata.authors.textContent;
-  content.metadata.tags = constructionMap.metadata.tags.textContent;
+
+  if (constructionMap.metadata.tags.textContent == "[no tags]") {
+    content.metadata.tags = []
+  } else {
+    content.metadata.tags = constructionMap.metadata.tags.textContent.split(" ")
+  }
 
   let built = JSON.stringify(content, null, 2);
   console.log(built);
