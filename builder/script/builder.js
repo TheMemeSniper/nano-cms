@@ -185,7 +185,7 @@ toolPanelButtons.text.addEventListener("click", () => {
 
 toolPanelButtons.image.addEventListener("click", () => {
   const widget = new ImageWidget({
-    src: new URL("../../img/placeholder.png", window.location.href).href,
+    src: new URL("./img/placeholder.png", window.location.href).href,
   });
 
   buildWidget(widget);
