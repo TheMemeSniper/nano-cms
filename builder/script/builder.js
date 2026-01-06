@@ -1,10 +1,13 @@
 import common from "./modules/common.js";
+import ImageWidget from "./modules/widgets/img.js";
 import TextWidget from "./modules/widgets/text.js";
+import { importArticle } from "./modules/importer.js";
 
 const toolPanelButtons = {
   text: document.getElementById("tool-panel-text"),
-  image: document.getElementById("tool-panel-image"),
+  image: document.getElementById("tool-panel-img"),
   build: document.getElementById("tool-panel-json"),
+  import: document.getElementById("tool-panel-import"),
 };
 
 const statusBar = document.getElementById("status-text");
@@ -36,6 +39,7 @@ let constructionMap = {
 window.constructionMap = constructionMap;
 
 let widgets = [];
+window.widgets = widgets
 
 let globalIssues = {};
 let issuesFound = "";
@@ -142,6 +146,18 @@ function build() {
   }
 }
 
+function defaultEditCallback(widget, reason) {
+  if (reason == "deleted") {
+    // deleted
+    delete globalIssues[widget.id];
+    delete widgets[widget.id];
+    updateStatus();
+    return;
+  }
+  // edited
+  updateStatus();
+}
+
 statusBar.addEventListener("click", () => {
   if (statusBar.textContent == "wonderhoy~!") {
     // Trust me its absolutely critical to the software
@@ -159,16 +175,41 @@ toolPanelButtons.text.addEventListener("click", () => {
   const widget = new TextWidget("New text");
 
   buildWidget(widget);
-  widget.editCallback = (reason) => {
-    if (reason == "deleted") {
-      // deleted
-      delete globalIssues[widget.id];
-      delete widgets[widget.id];
-      updateStatus();
-      return;
-    }
-    // edited
-    updateStatus();
-  };
+  widget.editCallback = defaultEditCallback;
 });
 
+toolPanelButtons.image.addEventListener("click", () => {
+  const widget = new ImageWidget({
+    src: new URL("../../img/placeholder.png", window.location.href).href,
+  });
+
+  buildWidget(widget);
+  widget.editCallback = defaultEditCallback;
+});
+
+toolPanelButtons.import.addEventListener("click", () => {
+  let data;
+  if (navigator.clipboard) {
+    navigator.clipboard.readText().finally((pasted) => {
+      data = pasted;
+    });
+  }
+  if (!data) {
+    data = prompt(
+      "we couldn't copy information from your clipboard. paste the article here:"
+    );
+  }
+  let imported = importArticle(data)
+  constructionMap = imported[0]
+  widgets = imported[1]
+  console.log(imported, imported[0], imported[1])
+
+  for (let index in widgets) {
+    let widget = widgets[index]
+    console.log(widget)
+    widget.editCallback = defaultEditCallback
+    buildWidget(widget)
+  }
+  updateStatus()
+
+});

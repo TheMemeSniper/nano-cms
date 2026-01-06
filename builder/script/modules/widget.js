@@ -17,28 +17,26 @@ export default class Widget {
         this._element.querySelector('.widget-delete').addEventListener('click', () => {
             this._element.remove();
             if (this.editCallback) {
-                this.editCallback("deleted");
+                this.editCallback(this, "deleted");
             }
         })
 
         this._element.querySelector('.widget-up').addEventListener('click', () => {
-            const lastIndex = this.index;
             const previous = this._element.previousElementSibling;
             if (previous) {
                 this._element.parentNode.insertBefore(this._element, previous);
                 if (this.editCallback) {
-                    this.editCallback("moved", lastIndex);
+                    this.editCallback(this, "moved");
                 }
             }
         })
 
         this._element.querySelector('.widget-down').addEventListener('click', () => {
-            const lastIndex = this.index;
             const next = this._element.nextElementSibling;
             if (next) {
                 this._element.parentNode.insertBefore(next, this._element);
                 if (this.editCallback) {
-                    this.editCallback("moved", lastIndex);
+                    this.editCallback(this, "moved");
                 }
             }
         })

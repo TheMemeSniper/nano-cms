@@ -71,6 +71,7 @@ body {
 #construction-site {
     background-color: #f0f0f0;
     margin-left: 4em;
+    overflow: auto;
 }
 
 #construction-site > * {
@@ -85,4 +86,8 @@ body {
 
 .widget-container > img {
     cursor: pointer;
+}
+
+.widget-img-container > img {
+    display: block;
 }

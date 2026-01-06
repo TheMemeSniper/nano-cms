@@ -10,7 +10,7 @@ export default class TextWidget extends Widget {
         paragraph.addEventListener('input', () => {
             this.data = paragraph.textContent;
             if (this.editCallback) {
-                this.editCallback();
+                this.editCallback(this);
             }
         });
         parentElement.appendChild(this._element);
