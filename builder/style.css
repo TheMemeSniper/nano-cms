@@ -49,6 +49,7 @@ body {
     padding: 0.5em;
     font-size: 0.9em;
     justify-content: space-between;
+    height: 7em;
 }
 
 #status-text {
@@ -72,6 +73,7 @@ body {
     background-color: #f0f0f0;
     margin-left: 4em;
     overflow: auto;
+    margin-bottom: 7em;
 }
 
 #construction-site > * {
@@ -90,4 +92,9 @@ body {
 
 .widget-img-container > img {
     display: block;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
 }

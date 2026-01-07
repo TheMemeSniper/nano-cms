@@ -2,10 +2,12 @@ import common from "./modules/common.js";
 import ImageWidget from "./modules/widgets/img.js";
 import TextWidget from "./modules/widgets/text.js";
 import { importArticle } from "./modules/importer.js";
+import VideoWidget from "./modules/widgets/vid.js";
 
 const toolPanelButtons = {
   text: document.getElementById("tool-panel-text"),
   image: document.getElementById("tool-panel-img"),
+  video: document.getElementById("tool-panel-vid"),
   build: document.getElementById("tool-panel-build"),
   import: document.getElementById("tool-panel-import"),
 };
@@ -186,6 +188,17 @@ toolPanelButtons.text.addEventListener("click", () => {
 toolPanelButtons.image.addEventListener("click", () => {
   const widget = new ImageWidget({
     src: new URL("./img/placeholder.png", window.location.href).href,
+    alt: 'emu otori from project sekai cheering with the text "Placeholder" above her'
+  });
+
+  buildWidget(widget);
+  widget.editCallback = defaultEditCallback;
+});
+
+toolPanelButtons.video.addEventListener("click", () => {
+  const widget = new VideoWidget({
+    src: new URL("./img/bees.mp4", window.location.href).href,
+    fallback: "omni man from invincible telling mark about how they can finally be bees. they'll be pets. this is good news."
   });
 
   buildWidget(widget);

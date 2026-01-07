@@ -1,6 +1,7 @@
 import common from "./common.js"
 import ImageWidget from "./widgets/img.js";
 import TextWidget from "./widgets/text.js";
+import VideoWidget from "./widgets/vid.js";
 
 export function importArticle(article) {
     let data
@@ -42,6 +43,11 @@ export function importArticle(article) {
                 switch (widget.type) {
                     case "img": {
                         let newWidget = new ImageWidget(widget.data)
+                        widgets.push(newWidget)
+                        break;
+                    }
+                    case "vid": {
+                        let newWidget = new VideoWidget(widget.data)
                         widgets.push(newWidget)
                         break;
                     }

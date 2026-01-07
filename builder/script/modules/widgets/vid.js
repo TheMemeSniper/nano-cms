@@ -1,15 +1,16 @@
 import Widget from '../widget.js';
 
-export default class ImageWidget extends Widget {
+export default class VideoWidget extends Widget {
     constructor(data) {
-        super("img", data);
+        super("vid", data);
     }
 
     ready(parentElement) {
         const content = this._element.querySelector('.widget-content');
-        const img = content.querySelector('.widget-img')
+        const video = content.querySelector('.widget-img')
         const urlInput = this._element.querySelector('.urlInput')
-        const altInput = this._element.querySelector('.altInput')
+        const fallbackInput = this._element.querySelector('.fallbackInput')
+        const fallbackParagraph = this._element.querySelector('.fallbackParagraph')
 
         urlInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
@@ -18,18 +19,18 @@ export default class ImageWidget extends Widget {
                 if (this.editCallback) {
                     this.editCallback(this);
                 }
-                img.src = urlInput.value;
+                video.src = urlInput.value;
             }
         });
 
-        altInput.addEventListener('keydown', (event) => {
+        fallbackInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 event.preventDefault()
-                this.data.alt = altInput.value;
+                this.data.fallback = fallbackInput.value;
                 if (this.editCallback) {
                     this.editCallback(this);
                 }
-                img.alt = altInput.value;
+                fallbackParagraph.textContent = fallbackInput.value;
             }
         });
 
@@ -45,59 +46,65 @@ export default class ImageWidget extends Widget {
         try {
             new URL(this.data.src)
         } catch {
-            this.issues.errors.push("ImageWidget source URL must be valid")
+            this.issues.errors.push("VideoWidget source URL must be valid")
             return this.issues;
         }
 
-        if (!this.data.alt || this.data.alt.trim() == "") {
-            this.issues.warnings.push("ImageWidget is missing alt text")
+        if (!this.data.fallback || this.data.fallback.trim() == "") {
+            this.issues.warnings.push("VideoWidget is missing a fallback description")
         }
         
         return this.issues;
     }
 
     buildElement() {
-        const img = document.createElement("img");
+        const video = document.createElement("video");
         const container = this._element.querySelector(".widget-content")
         const urlLabel = document.createElement("label")
-        const altLabel = document.createElement("label")
+        const fallbackLabel = document.createElement("label")
         const urlInput = document.createElement("input")
-        const altInput = document.createElement("input")
+        const fallbackInput = document.createElement("input")
         const inputContainer = document.createElement("div")
+        const fallbackParagraph = document.createElement("p")
 
         container.classList.add("widget-img-container")
         inputContainer.classList.add("inputContainer")
 
-        img.classList.add("widget-img")
-        img.src = this.data.src
+        video.classList.add("widget-img")
+        video.src = this.data.src
+        video.controls = true
 
         urlInput.type = "text"
         urlInput.placeholder = "write URL..."
         urlInput.value = this.data.src
         urlInput.classList.add("urlInput")
 
-        altInput.type = "text"
-        altInput.placeholder = "describe this image"
-        altInput.value = this.data.alt
-        altInput.classList.add("altInput")
+        fallbackInput.type = "text"
+        fallbackInput.placeholder = "describe this video, to be displayed when the video does not load or to be read by screenreaders"
+        fallbackInput.value = this.data.fallback
+        fallbackInput.classList.add("fallbackInput")
 
         const urlInputId = crypto.randomUUID()
         urlInput.id = urlInputId
         urlLabel.textContent = "URL"
         urlLabel.for = urlInputId
 
-        const altInputId = crypto.randomUUID()
-        altInput.id = altInputId
-        altLabel.textContent = "alt text"
-        altLabel.for = altInputId
+        const fallbackInputId = crypto.randomUUID()
+        fallbackInput.id = fallbackInputId
+        fallbackLabel.textContent = "fallback description"
+        fallbackLabel.for = fallbackInputId
 
-        container.appendChild(img)
+        fallbackParagraph.textContent = this.data.fallback
+        fallbackParagraph.classList.add("fallpackParagraph")
+
+        container.appendChild(video)
+        video.appendChild(fallbackParagraph)
         container.appendChild(inputContainer)
 
         inputContainer.appendChild(urlLabel)
         inputContainer.appendChild(urlInput)
-        inputContainer.appendChild(altLabel)
-        inputContainer.appendChild(altInput)
+        inputContainer.appendChild(fallbackLabel)
+        inputContainer.appendChild(fallbackInput)
     }
 
 
