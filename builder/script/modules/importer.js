@@ -1,7 +1,15 @@
 import common from "./common.js"
+
 import ImageWidget from "./widgets/img.js";
 import TextWidget from "./widgets/text.js";
+import RichTextWidget from "./widgets/richtext.js";
 import VideoWidget from "./widgets/vid.js";
+
+let widgetMap = {
+    img: ImageWidget,
+    vid: VideoWidget,
+    richtext: RichTextWidget
+}
 
 export function importArticle(article) {
     let data
@@ -9,7 +17,7 @@ export function importArticle(article) {
         data = JSON.parse(article)
     } catch {
         alert("error parsing article")
-        error("error parsing article")
+        console.error("error parsing article")
     }
 
     if (data["nano-cms"]) {
@@ -24,6 +32,7 @@ export function importArticle(article) {
             description: document.getElementById("description"),
             authors: document.getElementById("authorship"),
             tags: document.getElementById("tags"),
+            date: document.getElementById("date")
         },
     };
 
@@ -33,6 +42,7 @@ export function importArticle(article) {
     constructionMap.metadata.description.textContent = data.metadata.description
     constructionMap.metadata.authors.textContent = data.metadata.authors
     constructionMap.metadata.tags.textContent = data.metadata.tags
+    constructionMap.metadata.date.value = data.metadata.date
     
 
     for (let index in data.content) {
@@ -40,23 +50,16 @@ export function importArticle(article) {
         console.log(widget)
         if (typeof widget == "object") {
             if (widget.type) {
-                switch (widget.type) {
-                    case "img": {
-                        let newWidget = new ImageWidget(widget.data)
-                        widgets.push(newWidget)
-                        break;
-                    }
-                    case "vid": {
-                        let newWidget = new VideoWidget(widget.data)
-                        widgets.push(newWidget)
-                        break;
-                    }
-                    default:
-                        alert("unknown widget '" + widget.type + "', ignoring")
+                let newWidget = widgetMap[widget.type]
+                if (newWidget == undefined) {
+                    alert("unknown widget " + widget.type)
+                    continue
                 }
+                newWidget = new newWidget(widget.data);
+                widgets.push(newWidget);
             } else {
                 alert("article contains invalid widgets")
-                error("article contains invalid widgets")
+                console.error("article contains invalid widgets")
             }
         } else if (typeof widget == "string") {
             let newWidget = new TextWidget(widget)

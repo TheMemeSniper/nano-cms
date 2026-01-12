@@ -3,9 +3,11 @@ import ImageWidget from "./modules/widgets/img.js";
 import TextWidget from "./modules/widgets/text.js";
 import { importArticle } from "./modules/importer.js";
 import VideoWidget from "./modules/widgets/vid.js";
+import RichTextWidget from "./modules/widgets/richtext.js";
 
 const toolPanelButtons = {
   text: document.getElementById("tool-panel-text"),
+  markdown: document.getElementById("tool-panel-text-rich"),
   image: document.getElementById("tool-panel-img"),
   video: document.getElementById("tool-panel-vid"),
   build: document.getElementById("tool-panel-build"),
@@ -35,6 +37,7 @@ let constructionMap = {
     description: document.getElementById("description"),
     authors: document.getElementById("authorship"),
     tags: document.getElementById("tags"),
+    date: document.getElementById("date")
   },
 };
 
@@ -47,6 +50,8 @@ let globalIssues = {};
 let issuesFound = "";
 window.globalIssues = globalIssues;
 window.issuesFound = issuesFound;
+
+document.getElementById("version-header").textContent = "version " + common.version;
 
 function getOrderedWidgets() {
   let orderedWidgets = [];
@@ -132,6 +137,7 @@ function build() {
   content.metadata.description =
     constructionMap.metadata.description.textContent;
   content.metadata.authors = constructionMap.metadata.authors.textContent;
+  content.metadata.date = constructionMap.metadata.date.value
 
   if (constructionMap.metadata.tags.textContent == "[no tags]") {
     content.metadata.tags = []
@@ -180,6 +186,13 @@ toolPanelButtons.build.addEventListener("click", () => {
 
 toolPanelButtons.text.addEventListener("click", () => {
   const widget = new TextWidget("New text");
+
+  buildWidget(widget);
+  widget.editCallback = defaultEditCallback;
+});
+
+toolPanelButtons.markdown.addEventListener("click", () => {
+  const widget = new RichTextWidget("# Nano!");
 
   buildWidget(widget);
   widget.editCallback = defaultEditCallback;
