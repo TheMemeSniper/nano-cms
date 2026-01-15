@@ -20,6 +20,14 @@ export function importArticle(article) {
         console.error("error parsing article")
     }
 
+    if (data.metadata) {
+        if (data.metadata.type !== "article") {
+            alert("this is not an article, aborting import")
+            console.error("attempted an import of a nano-cms file that isn't an article")
+            return
+        }
+    }
+
     if (data["nano-cms"]) {
         if (data["nano-cms"].version > common.version) {
             alert("this article appears to have been built with a newer version of the builder, beware!")

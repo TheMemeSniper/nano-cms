@@ -26,7 +26,7 @@ let content = {
     title: "Untitled Article",
     description: "This is a sample article created using Nano CMS.",
     authors: "Jane Doe",
-    tags: "sample, nano cms, article",
+    tags: "sample, nano cms, article"
   },
   content: [],
 };
@@ -138,6 +138,7 @@ function build() {
     constructionMap.metadata.description.textContent;
   content.metadata.authors = constructionMap.metadata.authors.textContent;
   content.metadata.date = constructionMap.metadata.date.value
+  content.metadata.type = "article"
 
   if (constructionMap.metadata.tags.textContent == "[no tags]") {
     content.metadata.tags = []
