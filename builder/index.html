@@ -1,86 +1,184 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>nano-cms builder</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script type="module" defer src="script/builder.js"></script>
     <!-- Death before ever adding npm anything i hate it sooooo much -->
     <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
-    <link rel="icon" type="image/svg+xml" href="./img/favicon.svg">
-    <meta property="og:title" content="nano-cms builder">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://thememesniper.github.io/nano-cms/builder/img/og-image.png">
-    <meta property="og:description" content="a programmer's idea of a cms">
-    <meta property="og:image:alt" content="a blueprint with a wind up key outline on it" />
-    <meta property="og:url" content="https://thememesniper.github.io/nano-cms/builder" />
-    <meta name="theme-color" content="#488ff9">
-</head>
-<body>
+    <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
+    <meta property="og:title" content="nano-cms builder" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://thememesniper.github.io/nano-cms/builder/img/og-image.png"
+    />
+    <meta property="og:description" content="a programmer's idea of a cms" />
+    <meta
+      property="og:image:alt"
+      content="a blueprint with a wind up key outline on it"
+    />
+    <meta
+      property="og:url"
+      content="https://thememesniper.github.io/nano-cms/builder"
+    />
+    <meta name="theme-color" content="#488ff9" />
+  </head>
+  <body>
     <div id="status">
-        <h1>
-            <img src="img/favicon.svg" alt="nano-cms icon" style="max-width: 1.5em; height:auto;">
-            nano-cms builder</h1>
-        <h3 id="version-header"></h3>
-        <p id="status-text" class="success">wonderhoy~!</p>
+      <h1>
+        <img
+          src="img/favicon.svg"
+          alt="nano-cms icon"
+          style="max-width: 1.5em; height: auto"
+        />
+        nano-cms builder
+      </h1>
+      <h3 id="version-header"></h3>
+      <p id="status-text" class="success">wonderhoy~!</p>
     </div>
-    
+
     <div id="app">
-        <div id="tool-panel">
-            <button id="tool-panel-text" title="Add Text &#13;&#10;
+      <div id="tool-panel">
+        <button
+          id="tool-panel-text"
+          title="Add Text &#13;&#10;
             Add text to the article"
-            >T</button>
-            <button id="tool-panel-text-rich" title="Add Rich Text &#13;&#10;
+        >
+          <picture aria-hidden="true">
+            <source
+              srcset="./img/icons/dark/add-text.svg"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img src="./img/icons/light/add-text.svg" />
+          </picture>
+        </button>
+        <button
+          id="tool-panel-text-rich"
+          title="Add Rich Text &#13;&#10;
             Add rich markdown text to the article"
-            >MD</button>
-            <button id="tool-panel-img" title="Add Image &#13;&#10;
+        >
+          <picture aria-hidden="true">
+            <source
+              srcset="./img/icons/dark/markdown.svg"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img src="./img/icons/light/markdown.svg" />
+          </picture>
+        </button>
+        <button
+          id="tool-panel-img"
+          title="Add Image &#13;&#10;
             Add an image to the article"
-            >🖼️</button>
-            <button id="tool-panel-vid" title="Add Video &#13;&#10;
+        >
+          <picture aria-hidden="true">
+            <source
+              srcset="./img/icons/dark/image.svg"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img src="./img/icons/light/image.svg" />
+          </picture>
+        </button>
+        <button
+          id="tool-panel-vid"
+          title="Add Video &#13;&#10;
             Add a video to the article"
-            >🎥</button>
-            <button id="tool-panel-build" title="Build &#13;&#10;
+        >
+          <picture aria-hidden="true">
+            <source
+              srcset="./img/icons/dark/video.svg"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img src="./img/icons/light/video.svg" />
+          </picture>
+        </button>
+        <button
+          id="tool-panel-build"
+          title="Build &#13;&#10;
             Generate the JSON for the article"
-            >🔧</button>
-            <button id="tool-panel-import" title="Import &#13;&#10;
+        >
+          <picture aria-hidden="true">
+            <source
+              srcset="./img/icons/dark/build.svg"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img src="./img/icons/light/build.svg" />
+          </picture>
+        </button>
+        <button
+          id="tool-panel-import"
+          title="Import &#13;&#10;
             Import an article from the clipboard"
-            >📋</button>
-
-
+        >
+          <picture aria-hidden="true">
+            <source
+              srcset="./img/icons/dark/import.svg"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img src="./img/icons/light/import.svg" />
+          </picture>
+        </button>
+      </div>
+      <div id="construction-site">
+        <div id="metadata-panel" contenteditable="true">
+          <h1 id="title">Untitled</h1>
+          <p id="description">No description</p>
+          <p id="authorship">Unknown author</p>
+          <p id="tags">[no tags]</p>
+          <input type="date" id="date" name="date" />
         </div>
-        <div id="construction-site">
-            <div id="metadata-panel" contenteditable="true">
-                <h1 id="title">Untitled</h1>
-                <p id="description">No description</p>
-                <p id="authorship">Unknown author</p>
-                <p id="tags">[no tags]</p>
-                <input type="date" id="date" name="date">
-            </div>
-        </div>
+      </div>
     </div>
 
     <template id="widget-container">
-        <div class="widget-container">
-            <img class="widget-up" src="img/icons/move-up.svg" draggable="false" alt="Move Widget Up">
-            <img class="widget-down" src="img/icons/move-down.svg" draggable="false" alt="Move Widget Down">
-            <img class="widget-delete" src="img/icons/delete.svg" draggable="false" alt="Delete Widget">
-            <div class="widget-content">
-        </div>
+      <div class="widget-container">
+        <button class="widget-up">
+          <picture draggable="false" alt="Move widget up">
+            <source
+              srcset="img/icons/dark/move-up.svg"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img src="img/icons/light/move-up.svg" />
+          </picture>
+        </button>
+
+        <button class="widget-down">
+          <picture draggable="false" alt="Move widget down">
+            <source
+              srcset="img/icons/dark/move-down.svg"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img src="img/icons/light/move-down.svg" />
+          </picture>
+        </button>
+
+        <button class="widget-delete">
+          <picture draggable="false" alt="Delete widget">
+            <source
+              srcset="img/icons/dark/delete.svg"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img src="img/icons/light/delete.svg" />
+          </picture>
+        </button>
+
+        <div class="widget-content"></div>
+      </div>
     </template>
 
     <template id="rich-text-editor">
-        <div class="rich-text-editor-container">
-            <div class="rich-text-tabs">
-                <button class="rich-text-tab-md">Markdown</button>
-                <button class="rich-text-tab-preview">Preview</button>
-            </div>
-            <div class="rich-text-editor">
-                <textarea class="rich-text-textarea"># Nano!</textarea>
-            </div>
-            <div class="rich-text-preview" style="display: none;">
-            </div>
+      <div class="rich-text-editor-container">
+        <div class="rich-text-tabs">
+          <button class="rich-text-tab-md">Markdown</button>
+          <button class="rich-text-tab-preview">Preview</button>
         </div>
+        <div class="rich-text-editor">
+          <textarea class="rich-text-textarea"># Nano!</textarea>
+        </div>
+        <div class="rich-text-preview" style="display: none"></div>
+      </div>
     </template>
-</body>
+  </body>
 </html>

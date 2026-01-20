@@ -1,4 +1,4 @@
-import common from "./common.js"
+import common from "./common.js";
 
 import ImageWidget from "./widgets/img.js";
 import TextWidget from "./widgets/text.js";
@@ -6,76 +6,78 @@ import RichTextWidget from "./widgets/richtext.js";
 import VideoWidget from "./widgets/vid.js";
 
 let widgetMap = {
-    img: ImageWidget,
-    vid: VideoWidget,
-    richtext: RichTextWidget
-}
+  img: ImageWidget,
+  vid: VideoWidget,
+  richtext: RichTextWidget,
+};
 
 export function importArticle(article) {
-    let data
-    try {
-        data = JSON.parse(article)
-    } catch {
-        alert("error parsing article")
-        console.error("error parsing article")
-    }
+  let data;
+  try {
+    data = JSON.parse(article);
+  } catch {
+    alert("error parsing article");
+    console.error("error parsing article");
+  }
 
-    if (data.metadata) {
-        if (data.metadata.type !== "article") {
-            alert("this is not an article, aborting import")
-            console.error("attempted an import of a nano-cms file that isn't an article")
-            return
+  if (data.metadata) {
+    if (data.metadata.type !== "article") {
+      alert("this is not an article, aborting import");
+      console.error(
+        "attempted an import of a nano-cms file that isn't an article",
+      );
+      return;
+    }
+  }
+
+  if (data["nano-cms"]) {
+    if (data["nano-cms"].version > common.version) {
+      alert(
+        "this article appears to have been built with a newer version of the builder, beware!",
+      );
+    }
+  }
+
+  let constructionMap = {
+    metadata: {
+      title: document.getElementById("title"),
+      description: document.getElementById("description"),
+      authors: document.getElementById("authorship"),
+      tags: document.getElementById("tags"),
+      date: document.getElementById("date"),
+    },
+  };
+
+  let widgets = [];
+
+  constructionMap.metadata.title.textContent = data.metadata.title;
+  constructionMap.metadata.description.textContent = data.metadata.description;
+  constructionMap.metadata.authors.textContent = data.metadata.authors;
+  constructionMap.metadata.tags.textContent = data.metadata.tags;
+  constructionMap.metadata.date.value = data.metadata.date;
+
+  for (let index in data.content) {
+    let widget = data.content[index];
+    console.log(widget);
+    if (typeof widget == "object") {
+      if (widget.type) {
+        let newWidget = widgetMap[widget.type];
+        if (newWidget == undefined) {
+          alert("unknown widget " + widget.type);
+          continue;
         }
+        newWidget = new newWidget(widget.data);
+        widgets.push(newWidget);
+      } else {
+        alert("article contains invalid widgets");
+        console.error("article contains invalid widgets");
+      }
+    } else if (typeof widget == "string") {
+      let newWidget = new TextWidget(widget);
+      widgets.push(newWidget);
     }
+  }
 
-    if (data["nano-cms"]) {
-        if (data["nano-cms"].version > common.version) {
-            alert("this article appears to have been built with a newer version of the builder, beware!")
-        }
-    }
-
-    let constructionMap = {
-        metadata: {
-            title: document.getElementById("title"),
-            description: document.getElementById("description"),
-            authors: document.getElementById("authorship"),
-            tags: document.getElementById("tags"),
-            date: document.getElementById("date")
-        },
-    };
-
-    let widgets = []
-
-    constructionMap.metadata.title.textContent = data.metadata.title
-    constructionMap.metadata.description.textContent = data.metadata.description
-    constructionMap.metadata.authors.textContent = data.metadata.authors
-    constructionMap.metadata.tags.textContent = data.metadata.tags
-    constructionMap.metadata.date.value = data.metadata.date
-    
-
-    for (let index in data.content) {
-        let widget = data.content[index]
-        console.log(widget)
-        if (typeof widget == "object") {
-            if (widget.type) {
-                let newWidget = widgetMap[widget.type]
-                if (newWidget == undefined) {
-                    alert("unknown widget " + widget.type)
-                    continue
-                }
-                newWidget = new newWidget(widget.data);
-                widgets.push(newWidget);
-            } else {
-                alert("article contains invalid widgets")
-                console.error("article contains invalid widgets")
-            }
-        } else if (typeof widget == "string") {
-            let newWidget = new TextWidget(widget)
-            widgets.push(newWidget)
-        }
-    }
-
-    alert("import complete")
-    return [constructionMap, widgets]
-
+  alert("import complete");
+  return [constructionMap, widgets];
 }

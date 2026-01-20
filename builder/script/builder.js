@@ -26,7 +26,7 @@ let content = {
     title: "Untitled Article",
     description: "This is a sample article created using Nano CMS.",
     authors: "Jane Doe",
-    tags: "sample, nano cms, article"
+    tags: "sample, nano cms, article",
   },
   content: [],
 };
@@ -37,21 +37,22 @@ let constructionMap = {
     description: document.getElementById("description"),
     authors: document.getElementById("authorship"),
     tags: document.getElementById("tags"),
-    date: document.getElementById("date")
+    date: document.getElementById("date"),
   },
 };
 
 window.constructionMap = constructionMap;
 
 let widgets = [];
-window.widgets = widgets
+window.widgets = widgets;
 
 let globalIssues = {};
 let issuesFound = "";
 window.globalIssues = globalIssues;
 window.issuesFound = issuesFound;
 
-document.getElementById("version-header").textContent = "version " + common.version;
+document.getElementById("version-header").textContent =
+  "version " + common.version;
 
 function getOrderedWidgets() {
   let orderedWidgets = [];
@@ -137,13 +138,14 @@ function build() {
   content.metadata.description =
     constructionMap.metadata.description.textContent;
   content.metadata.authors = constructionMap.metadata.authors.textContent;
-  content.metadata.date = constructionMap.metadata.date.value
-  content.metadata.type = "article"
+  content.metadata.date = constructionMap.metadata.date.value;
+  content.metadata.type = "article";
 
   if (constructionMap.metadata.tags.textContent == "[no tags]") {
-    content.metadata.tags = []
+    content.metadata.tags = [];
   } else {
-    content.metadata.tags = constructionMap.metadata.tags.textContent.split(" ")
+    content.metadata.tags =
+      constructionMap.metadata.tags.textContent.split(" ");
   }
 
   let built = JSON.stringify(content, null, 2);
@@ -151,11 +153,34 @@ function build() {
 
   var newTab = window.open("", "_blank");
   if (newTab) {
-    newTab.document.write("<pre>" + built + "</pre>");
+    const head = newTab.document.head;
+    const style = newTab.document.createElement("style");
+    style.innerText = `
+    :root {
+      --text-color: #000;
+      --bg-color: #fff;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-color: #fff;
+        --bg-color: #000;
+      }
+    }
+
+    body {
+      color: var(--text-color);
+      background-color: var(--bg-color);
+    }
+    `;
+    head.appendChild(style);
+    const pre = newTab.document.createElement("pre");
+    pre.innerText = built;
+    newTab.document.body.appendChild(pre);
     newTab.document.close();
   } else {
     alert(
-      "export popup blocked! please enable popups for this site (or nab your JSON from the console. its there too)"
+      "export popup blocked! please enable popups for this site (or nab your JSON from the console. its there too)",
     );
   }
 }
@@ -202,7 +227,7 @@ toolPanelButtons.markdown.addEventListener("click", () => {
 toolPanelButtons.image.addEventListener("click", () => {
   const widget = new ImageWidget({
     src: new URL("./img/placeholder.png", window.location.href).href,
-    alt: 'emu otori from project sekai cheering with the text "Placeholder" above her'
+    alt: 'emu otori from project sekai cheering with the text "Placeholder" above her',
   });
 
   buildWidget(widget);
@@ -212,7 +237,8 @@ toolPanelButtons.image.addEventListener("click", () => {
 toolPanelButtons.video.addEventListener("click", () => {
   const widget = new VideoWidget({
     src: new URL("./img/bees.mp4", window.location.href).href,
-    fallback: "omni man from invincible telling mark about how they can finally be bees. they'll be pets. this is good news."
+    fallback:
+      "omni man from invincible telling mark about how they can finally be bees. they'll be pets. this is good news.",
   });
 
   buildWidget(widget);
@@ -228,20 +254,19 @@ toolPanelButtons.import.addEventListener("click", () => {
   }
   if (!data) {
     data = prompt(
-      "we couldn't copy information from your clipboard. paste the article here:"
+      "we couldn't copy information from your clipboard. paste the article here:",
     );
   }
-  let imported = importArticle(data)
-  constructionMap = imported[0]
-  widgets = imported[1]
-  console.log(imported, imported[0], imported[1])
+  let imported = importArticle(data);
+  constructionMap = imported[0];
+  widgets = imported[1];
+  console.log(imported, imported[0], imported[1]);
 
   for (let index in widgets) {
-    let widget = widgets[index]
-    console.log(widget)
-    widget.editCallback = defaultEditCallback
-    buildWidget(widget)
+    let widget = widgets[index];
+    console.log(widget);
+    widget.editCallback = defaultEditCallback;
+    buildWidget(widget);
   }
-  updateStatus()
-
+  updateStatus();
 });
