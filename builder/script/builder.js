@@ -245,13 +245,12 @@ toolPanelButtons.video.addEventListener("click", () => {
   widget.editCallback = defaultEditCallback;
 });
 
-toolPanelButtons.import.addEventListener("click", () => {
-  let data;
+toolPanelButtons.import.addEventListener("click", async () => {
+  let data = "";
   if (navigator.clipboard) {
-    navigator.clipboard.readText().finally((pasted) => {
-      data = pasted;
-    });
+    data = await navigator.clipboard.readText()
   }
+  console.log(data)
   if (!data) {
     data = prompt(
       "we couldn't copy information from your clipboard. paste the article here:",
