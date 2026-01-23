@@ -3,58 +3,58 @@
 // kinda like a crate in rust
 
 export function parse(content, targetNode, marked, dompurify) {
-    const article = document.createElement('article');
-    const title = document.createElement('h1');
-    title.textContent = content.metadata.title || 'Untitled Article';
-    article.appendChild(title);
+  const article = document.createElement("article");
+  const title = document.createElement("h1");
+  title.textContent = content.metadata.title || "Untitled Article";
+  article.appendChild(title);
 
-    const description = document.createElement('p');
-    description.textContent = content.metadata.description || '';
-    article.appendChild(description);
+  const description = document.createElement("p");
+  description.textContent = content.metadata.description || "";
+  article.appendChild(description);
 
-    const authors = document.createElement('p');
-    authors.textContent = 'By: ' + (content.metadata.authors || 'Unknown Author');
-    article.appendChild(authors);
+  const authors = document.createElement("p");
+  authors.textContent = "By: " + (content.metadata.authors || "Unknown Author");
+  article.appendChild(authors);
 
-    const tags = document.createElement('p');
-    tags.textContent = 'Tags: ' + (content.metadata.tags || 'None');
-    article.appendChild(tags);
+  const tags = document.createElement("p");
+  tags.textContent = "Tags: " + (content.metadata.tags || "None");
+  article.appendChild(tags);
 
-    const br = document.createElement('br');
-    article.appendChild(br);
+  const br = document.createElement("br");
+  article.appendChild(br);
 
-    for (const widget of content.content) {
-        if (typeof(widget) === 'string') {
-            const paragraph = document.createElement('p');
-            paragraph.textContent = widget;
-            article.appendChild(paragraph);
-        } else if (typeof(widget) === 'object' && widget.type) {
-            switch (widget.type) {
-                case 'img':
-                    const img = document.createElement('img');
-                    img.src = widget.data.src || '';
-                    img.alt = widget.data.alt || '';
-                    article.appendChild(img);
-                    break;
-                case 'vid':
-                    const vid = document.createElement('video');
-                    const p = document.createElement('p');
-                    vid.src = widget.data.src || '';
-                    vid.setAttribute("controls", "");
-                    p.innerText = widget.data.fallback || '';
-                    vid.appendChild(p);
-                    article.appendChild(vid);
-                    break;
-                case 'richtext':
-                    let mkdn = dompurify.sanitize(marked.parse(widget.data));
-                    let element = document.createElement("div");
-                    element.innerHTML = mkdn;
-                    article.appendChild(element);
-                    break;
-                default:
-                    console.warn('Unknown widget type: ' + widget.type);
-            }
-        }
+  for (const widget of content.content) {
+    if (typeof widget === "string") {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = widget;
+      article.appendChild(paragraph);
+    } else if (typeof widget === "object" && widget.type) {
+      switch (widget.type) {
+        case "img":
+          const img = document.createElement("img");
+          img.src = widget.data.src || "";
+          img.alt = widget.data.alt || "";
+          article.appendChild(img);
+          break;
+        case "vid":
+          const vid = document.createElement("video");
+          const p = document.createElement("p");
+          vid.src = widget.data.src || "";
+          vid.setAttribute("controls", "");
+          p.innerText = widget.data.fallback || "";
+          vid.appendChild(p);
+          article.appendChild(vid);
+          break;
+        case "richtext":
+          let mkdn = dompurify.sanitize(marked.parse(widget.data));
+          let element = document.createElement("div");
+          element.innerHTML = mkdn;
+          article.appendChild(element);
+          break;
+        default:
+          console.warn("Unknown widget type: " + widget.type);
+      }
     }
-    targetNode.appendChild(article);
+  }
+  targetNode.appendChild(article);
 }

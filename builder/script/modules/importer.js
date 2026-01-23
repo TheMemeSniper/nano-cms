@@ -14,7 +14,7 @@ let widgetMap = {
 export function importArticle(article, disableAlerts) {
   let data;
   if (typeof article == "object") {
-    data = article
+    data = article;
   } else {
     try {
       data = JSON.parse(article);
@@ -25,7 +25,7 @@ export function importArticle(article, disableAlerts) {
   }
 
   if (!data) {
-    return
+    return;
   }
 
   if (data.metadata) {
@@ -40,9 +40,10 @@ export function importArticle(article, disableAlerts) {
 
   if (data["nano-cms"]) {
     if (data["nano-cms"].version > common.version) {
-      if (!disableAlerts) alert(
-        "this article appears to have been built with a newer version of the builder, beware!",
-      );
+      if (!disableAlerts)
+        alert(
+          "this article appears to have been built with a newer version of the builder, beware!",
+        );
     }
   }
 

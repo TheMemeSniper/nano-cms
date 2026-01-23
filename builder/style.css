@@ -109,7 +109,7 @@ button:active {
 }
 
 .widget-container > button {
-  border : 0;
+  border: 0;
 }
 
 .widget-container > img {
@@ -140,7 +140,6 @@ pre {
   border-radius: 4px;
 }
 
-
 #export-controls > * {
   background: none;
   border: 2px black solid;
@@ -158,30 +157,34 @@ pre {
   background-color: var(--button-active-color);
 }
 
-#export-controls > a:link, a:visited, a:hover, a:focus, a:active {
+#export-controls > a:link,
+a:visited,
+a:hover,
+a:focus,
+a:active {
   color: var(--text-color);
   text-decoration: none;
 }
 
-
 body {
-	text-align: left !important;
+  text-align: left !important;
 }
 
 article {
-	max-width:1000px;
-	margin-left:auto;
-	margin-right:auto;
-	padding-top:2em;
-	padding-bottom:2em;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 2em;
+  padding-bottom: 2em;
 }
 
-article > img, video {
-	display: block;
-	max-width: 100%;
-	max-height: 100%;
-	width: auto;
-	height: auto;
+article > img,
+video {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
 }
 
 #darken {
@@ -213,20 +216,20 @@ article > img, video {
   flex-direction: row;
   text-align: center;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   overflow: auto;
 }
 
 #stash-file-list > li:nth-child(odd) {
-  background-color: var(--bg-tertiary-color)
+  background-color: var(--bg-tertiary-color);
 }
 
 #stash-file-list > li:nth-child(odd) > button:hover {
-  background-color: var(--bg-secondary-color)
+  background-color: var(--bg-secondary-color);
 }
 
 #stash-file-list > li:nth-child(odd) > button:active {
-  background-color: var(--bg-color)
+  background-color: var(--bg-color);
 }
 
 .panel {
