@@ -2,7 +2,7 @@
 // Nano Tip: a "key" is a cute name for a renderer for a specific content type
 // kinda like a crate in rust
 
-function parse(content, targetNode) {
+export function parse(content, targetNode, marked, dompurify) {
     const article = document.createElement('article');
     const title = document.createElement('h1');
     title.textContent = content.metadata.title || 'Untitled Article';
@@ -23,18 +23,33 @@ function parse(content, targetNode) {
     const br = document.createElement('br');
     article.appendChild(br);
 
-    for (const widget of content.widgets) {
+    for (const widget of content.content) {
         if (typeof(widget) === 'string') {
             const paragraph = document.createElement('p');
             paragraph.textContent = widget;
             article.appendChild(paragraph);
         } else if (typeof(widget) === 'object' && widget.type) {
             switch (widget.type) {
-                case 'image':
+                case 'img':
                     const img = document.createElement('img');
-                    img.src = widget.src || '';
-                    img.alt = widget.alt || '';
+                    img.src = widget.data.src || '';
+                    img.alt = widget.data.alt || '';
                     article.appendChild(img);
+                    break;
+                case 'vid':
+                    const vid = document.createElement('video');
+                    const p = document.createElement('p');
+                    vid.src = widget.data.src || '';
+                    vid.setAttribute("controls", "");
+                    p.innerText = widget.data.fallback || '';
+                    vid.appendChild(p);
+                    article.appendChild(vid);
+                    break;
+                case 'richtext':
+                    let mkdn = dompurify.sanitize(marked.parse(widget.data));
+                    let element = document.createElement("div");
+                    element.innerHTML = mkdn;
+                    article.appendChild(element);
                     break;
                 default:
                     console.warn('Unknown widget type: ' + widget.type);

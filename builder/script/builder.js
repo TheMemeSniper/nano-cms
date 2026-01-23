@@ -4,6 +4,7 @@ import TextWidget from "./modules/widgets/text.js";
 import { importArticle } from "./modules/importer.js";
 import VideoWidget from "./modules/widgets/vid.js";
 import RichTextWidget from "./modules/widgets/richtext.js";
+import { getFileList, saveFileList } from "./modules/stash.js";
 
 const toolPanelButtons = {
   text: document.getElementById("tool-panel-text"),
@@ -12,7 +13,14 @@ const toolPanelButtons = {
   video: document.getElementById("tool-panel-vid"),
   build: document.getElementById("tool-panel-build"),
   import: document.getElementById("tool-panel-import"),
+  stash: document.getElementById("tool-panel-stash")
 };
+
+const panels = {
+  darken: document.getElementById("darken"),
+  stash: document.getElementById("stash-panel"),
+  stashClose: document.getElementById("stash-panel-close")
+}
 
 const statusBar = document.getElementById("status-text");
 
@@ -151,38 +159,10 @@ function build() {
   let built = JSON.stringify(content, null, 2);
   console.log(built);
 
-  var newTab = window.open("", "_blank");
-  if (newTab) {
-    const head = newTab.document.head;
-    const style = newTab.document.createElement("style");
-    style.innerText = `
-    :root {
-      --text-color: #000;
-      --bg-color: #fff;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --text-color: #fff;
-        --bg-color: #000;
-      }
-    }
+  const urlParams = new URLSearchParams();
+  urlParams.set('article', built)
 
-    body {
-      color: var(--text-color);
-      background-color: var(--bg-color);
-    }
-    `;
-    head.appendChild(style);
-    const pre = newTab.document.createElement("pre");
-    pre.innerText = built;
-    newTab.document.body.appendChild(pre);
-    newTab.document.close();
-  } else {
-    alert(
-      "export popup blocked! please enable popups for this site (or nab your JSON from the console. its there too)",
-    );
-  }
+  window.location = `./export.html?${urlParams.toString()}`
 }
 
 function defaultEditCallback(widget, reason) {
@@ -194,6 +174,21 @@ function defaultEditCallback(widget, reason) {
     return;
   }
   // edited
+  updateStatus();
+}
+
+function importHelper(article, disableAlerts) {
+  let imported = importArticle(article, disableAlerts);
+  constructionMap = imported[0];
+  widgets = imported[1];
+  console.log(imported, imported[0], imported[1]);
+
+  for (let index in widgets) {
+    let widget = widgets[index];
+    console.log(widget);
+    widget.editCallback = defaultEditCallback;
+    buildWidget(widget);
+  }
   updateStatus();
 }
 
@@ -256,16 +251,46 @@ toolPanelButtons.import.addEventListener("click", async () => {
       "we couldn't copy information from your clipboard. paste the article here:",
     );
   }
-  let imported = importArticle(data);
-  constructionMap = imported[0];
-  widgets = imported[1];
-  console.log(imported, imported[0], imported[1]);
-
-  for (let index in widgets) {
-    let widget = widgets[index];
-    console.log(widget);
-    widget.editCallback = defaultEditCallback;
-    buildWidget(widget);
-  }
-  updateStatus();
+  importHelper(data)
 });
+
+toolPanelButtons.stash.addEventListener("click", () => {
+  let fileList = getFileList()
+  if (!fileList) {
+    return
+  }
+  panels.darken.classList.remove("hidden");
+  panels.stash.classList.remove("hidden");
+  for (const file in fileList) {
+      let li = document.createElement("li")
+      li.innerText = file
+      let button = document.createElement("button")
+      button.id = "stash-filelist-" + file
+      button.innerText = "Load"
+      button.onclick = () => {
+          let confirmation = confirm("are you sure you want to load " + file + "?")
+          if (!confirmation) {
+              alert("ok cancelled")
+              return
+          }
+          console.log(file, fileList[file])
+          importHelper(fileList[file])
+          panels.darken.classList.add("hidden");
+          panels.stash.classList.add("hidden");
+      }
+      li.appendChild(button)
+      panels.stash.querySelector("#stash-file-list").appendChild(li)
+  }
+})
+
+panels.stashClose.addEventListener("click", () => {
+  panels.darken.classList.add("hidden");
+  panels.stash.classList.add("hidden");
+})
+
+if (window.location.search !== '') {
+  let usp = new URLSearchParams(window.location.search)
+  if (usp.get('article')) {
+    importHelper(usp.get('article'), true)
+  }
+}

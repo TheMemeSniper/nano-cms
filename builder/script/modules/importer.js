@@ -11,18 +11,26 @@ let widgetMap = {
   richtext: RichTextWidget,
 };
 
-export function importArticle(article) {
+export function importArticle(article, disableAlerts) {
   let data;
-  try {
-    data = JSON.parse(article);
-  } catch {
-    alert("error parsing article");
-    console.error("error parsing article");
+  if (typeof article == "object") {
+    data = article
+  } else {
+    try {
+      data = JSON.parse(article);
+    } catch {
+      if (!disableAlerts) alert("error parsing article");
+      console.error("error parsing article");
+    }
+  }
+
+  if (!data) {
+    return
   }
 
   if (data.metadata) {
     if (data.metadata.type !== "article") {
-      alert("this is not an article, aborting import");
+      if (!disableAlerts) alert("this is not an article, aborting import");
       console.error(
         "attempted an import of a nano-cms file that isn't an article",
       );
@@ -32,7 +40,7 @@ export function importArticle(article) {
 
   if (data["nano-cms"]) {
     if (data["nano-cms"].version > common.version) {
-      alert(
+      if (!disableAlerts) alert(
         "this article appears to have been built with a newer version of the builder, beware!",
       );
     }
@@ -63,13 +71,13 @@ export function importArticle(article) {
       if (widget.type) {
         let newWidget = widgetMap[widget.type];
         if (newWidget == undefined) {
-          alert("unknown widget " + widget.type);
+          if (!disableAlerts) alert("unknown widget " + widget.type);
           continue;
         }
         newWidget = new newWidget(widget.data);
         widgets.push(newWidget);
       } else {
-        alert("article contains invalid widgets");
+        if (!disableAlerts) alert("article contains invalid widgets");
         console.error("article contains invalid widgets");
       }
     } else if (typeof widget == "string") {
@@ -78,6 +86,6 @@ export function importArticle(article) {
     }
   }
 
-  alert("import complete");
+  if (!disableAlerts) alert("import complete");
   return [constructionMap, widgets];
 }

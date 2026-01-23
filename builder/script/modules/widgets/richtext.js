@@ -1,6 +1,7 @@
 import Widget from "../widget.js";
 
 let marked = window.marked;
+let dompurify = window.DOMPurify;
 const template = document.querySelector("#rich-text-editor");
 
 export default class RichTextWidget extends Widget {
@@ -55,7 +56,7 @@ export default class RichTextWidget extends Widget {
       editorArea.style = "display: none";
       previewArea.style = "";
       previewArea.textContent = "parsing... please wait";
-      const parsed = marked.parse(textarea.value);
+      const parsed = dompurify.sanitize(marked.parse(textarea.value));
       previewArea.innerHTML = parsed;
     });
 

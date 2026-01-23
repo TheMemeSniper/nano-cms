@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,6 +8,7 @@
     <script type="module" defer src="script/builder.js"></script>
     <!-- Death before ever adding npm anything i hate it sooooo much -->
     <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+    <script type="text/javascript" src="dist/purify.min.js"></script>
     <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
     <meta property="og:title" content="nano-cms builder" />
     <meta property="og:type" content="website" />
@@ -120,6 +121,19 @@
             <img src="./img/icons/light/import.svg" />
           </picture>
         </button>
+        <button
+          id="tool-panel-stash"
+          title="Stash &#13;&#10;
+            Import an article from your stash"
+        >
+          <picture aria-hidden="true">
+            <source
+              srcset="./img/icons/dark/stash.svg"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img src="./img/icons/light/stash.svg" />
+          </picture>
+        </button>
       </div>
       <div id="construction-site">
         <div id="metadata-panel" contenteditable="true">
@@ -131,6 +145,17 @@
         </div>
       </div>
     </div>
+
+    <!-- Panels -->
+     <div id="darken" class="hidden"></div>
+     <div class="panel hidden" id="stash-panel">
+        <h1>Stash</h1>
+        <p>articles saved to the stash in the exporter will appear here</p>
+        <button id="stash-panel-close">Close</button>
+        <ul id="stash-file-list"></ul>
+     </div>
+
+    <!-- Templates -->
 
     <template id="widget-container">
       <div class="widget-container">
